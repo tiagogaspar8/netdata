@@ -1709,6 +1709,9 @@ if(ENABLE_MQTTWEBSOCKETS)
 endif()
 
 if(ENABLE_ACLK)
+        # Set linker flags before generating the proto files
+        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${LDFLAGS}")
+        target_link_libraries(libnetdata PUBLIC ${ZLIB_LDFLAGS})
         #
         # proto definitions
         #
