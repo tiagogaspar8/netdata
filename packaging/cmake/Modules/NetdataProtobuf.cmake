@@ -177,6 +177,7 @@ function(netdata_protoc_generate_cpp INC_DIR OUT_DIR SRCS HDRS)
                                    DEPENDS ${ABS_FIL} ${PROTOBUF_PROTOC_EXECUTABLE}
                                    COMMENT "Running C++ protocol buffer compiler on ${FIL}"
                                    COMMAND_EXPAND_LISTS)
+                                   COMMAND ${CMAKE_C_COMPILER} -Wl,--start-group ${LDFLAGS} ${GENERATED_PB_CC} -o ${OUT_DIR}/${FIL_WE}.out)
         endforeach()
 
         set_source_files_properties(${${SRCS}} ${${HDRS}} PROPERTIES GENERATED TRUE)
