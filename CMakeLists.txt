@@ -502,13 +502,11 @@ check_function_exists(sysinfo HAVE_SYSINFO)
 
 check_function_exists(timegm HAVE_TIMEGM)
 
-if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    # -fno-omit-frame-pointer = add frame pointers to all functions
-    # -funwind-tables = generate unwind tables for all functions
-    # -fasynchronous-unwind-tables = the unwind table generated is precise at instruction boundary, instead of function boundary
-    add_compile_options(-fno-omit-frame-pointer -funwind-tables -fasynchronous-unwind-tables)
-    add_link_options(-rdynamic)
-    message(STATUS "Added compiler and linker flags for better stack trace support")
+if(HAVE_BACKTRACE AND NOT ENABLE_LIBUNWIND AND NOT STATIC_BUILD)
+    if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+        add_link_options(-rdynamic)
+        message(STATUS "Adding -rdynamic to link options for better backtrace support")
+    endif()
 endif()
 
 if(ENABLE_LIBBACKTRACE)
